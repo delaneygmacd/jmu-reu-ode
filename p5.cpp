@@ -82,15 +82,14 @@ vector<T> derivative(vector<T> f){
 	return deriv;
 }
 
-/* template <class T>
-vector<T> solve(T x0,T step, T end, int n, bool forward){
-    vector<T> solution;
+vector<double> solve_double(double x0,double step, double end, int n, bool forward){
+    vector<double> solution;
     solution.push_back(x0);
     int step_count = 0;
-    T newx0 = x0;
+    double newx0 = x0;
     for(int i = 1; step*i<= end; i++){
         //if use_double ....
-        vector<T> coeff = coefficients(newx0,n);
+        vector<double> coeff = coefficients(newx0,n);
         if(forward){
             newx0 = eval(coeff,step);
         }
@@ -101,7 +100,27 @@ vector<T> solve(T x0,T step, T end, int n, bool forward){
         step_count++;
     }
     return solution;
-} */
+}
+
+vector<float> solve_float(float x0,double step, double end, int n, bool forward){
+    vector<float> solution;
+    solution.push_back(x0);
+    int step_count = 0;
+    float newx0 = x0;
+    for(int i = 1; step*i<= end; i++){
+        //if use_double ....
+        vector<float> coeff = coefficients(newx0,n);
+        if(forward){
+            newx0 = eval(coeff,step);
+        }
+        else{
+            newx0 = eval(coeff,-step);
+        }
+        solution.push_back(newx0);
+        step_count++;
+    }
+    return solution;
+}
 
 //newx0 = eval(coefficients(newx0,n), (forward ? step ; -step));
 //newx0 = eval(coefficients((float)newx0,n), (forward ? step ; -step));
@@ -171,9 +190,14 @@ int main(int argc, const char* argv[]){
             newx0 = eval(coeff,-step);
         }            solution.push_back(newx0);
             step_count++;
-        }      
+        }
+        cout << solution;   
+        //This operation won't work to show what I wanted to do, I cannot print the vector<double>
+        //What I wanted to do was write two different functions, solve in double and then solve in float and then just make it so for the if else 
+        //statement, I would call either the solve double or the solve float function. I think that would make it easier. 
     }
-    else{
+    
+    /* else{
         float newx0 = x0;
         int step_count = 0;
         vector<float> solution;
@@ -189,7 +213,7 @@ int main(int argc, const char* argv[]){
         }            solution.push_back(newx0);
             step_count++;
         }
-    }
+    } */
 
     }
     //vector<double> dSolF = findDerivative(x0,step,end,n,1);
@@ -228,5 +252,3 @@ int main(int argc, const char* argv[]){
         cout<<setw(15)<<i*step<<setw(15)<<solF[i]<<setw(15)<<Terror<<setw(15)<<difference<<setw(15)<<error<<"\n";
     } */
    // out.close();
-    return 0;
-}
