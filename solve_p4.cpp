@@ -90,15 +90,15 @@ pair<double, double> computeNext(double x0,double step,bool forward,int n){
 	 vector<double> coeff = coefficients(x0,n);
 	 vector<double> deriv = derivative(coeff);
 	 if(forward){
-		return {eval(coeff,step), eval(deriv,step)};
+		return make_pair(eval(coeff,step), eval(deriv,step));
 	 }
 	 else{
-		return {eval(coeff,-step), eval(deriv,-step)};
+		return make_pair(eval(coeff,-step), eval(deriv,-step));
 	}
 }
 
 
-pair<vector<double>,vector<double>> generateSolutionStepper(double x0,double step, bool forward, double end, int n){
+pair<vector<double>,vector<double> > generateSolutionStepper(double x0,double step, bool forward, double end, int n){
 	/*Inputs:
 	 * x0  : parameters of the ODE
 	 * step: Size of the step
@@ -120,7 +120,7 @@ pair<vector<double>,vector<double>> generateSolutionStepper(double x0,double ste
 		deriv.push_back(cond.second);
 		newx0 = cond.first; 
 	 }
-	 return {sol,deriv};
+	 return make_pair(sol,deriv);
 }
 
 
@@ -150,34 +150,34 @@ int main(int argc, const char* argv[]){
 	vector<double> solutionStepperF = generateSolutionStepper(x0,step,forward,end, n).first;
 	vector<double> derivSolutionF = generateSolutionStepper(x0,step,forward,end, n).second;
 	
-    out.open("out.dat");
+    //out.open("out.dat");
 	for(int i = solutionStepperB.size()-1; i>=0; i--){
 		int dig = 1000;
-		out.precision(5);
-		out<<fixed<<setw(15)<<-i*step<<" ";
+		cout.precision(5);
+		cout<<fixed<<setw(15)<<-i*step<<" ";
 		double stepper = solutionStepperB[i];
 		double deriv = derivSolutionB[i];
 		
 		if( abs(stepper)>dig || abs(deriv)>dig ){
-			out<<scientific<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
+			cout<<scientific<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
 		}
 		else{					
-			out<<fixed<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
+			cout<<fixed<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
 		}
 	}
 	for(int i = 1; i<solutionStepperF.size(); i++){
 		int dig = 1000;
-		out.precision(5);
-		out<<fixed<<setw(15)<<i*step<<" ";
+		cout.precision(5);
+		cout<<fixed<<setw(15)<<i*step<<" ";
 		double stepper = solutionStepperF[i];
 		double deriv = derivSolutionF[i];
 		
 		if( abs(stepper)>dig || abs(deriv)>dig ){
-			out<<scientific<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
+			cout<<scientific<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
 		}
 		else{					
-			out<<fixed<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
+			cout<<fixed<<setw(15)<<stepper<<" "<<setw(15)<<deriv<<"\n";
 		}
 	}
-    out.close();
+    //out.close();
 }
